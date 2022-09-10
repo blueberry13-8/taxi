@@ -7,6 +7,11 @@ import 'package:taxi/models/order.dart';
 class UserRepo {
   static const String apiUrl = 'https://volunteertaxiapp.herokuapp.com';
 
+  Future<String> _getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token')!;
+  }
+
   Future<bool> register(User user) async {
     final uri = Uri.parse('$apiUrl/register');
     final http.Response response;
@@ -46,11 +51,42 @@ class UserRepo {
     return true;
   }
 
-// List<Order> getUsersOrders() {
-//   try {
-//
-//   } catch {
-//
-//   }
-// }
+  Future<bool> addOrder(Order order) async {
+    final uri = Uri.parse('$apiUrl/add_order');
+    final http.Response response;
+    final token = await _getToken();
+    //final body
+    try {
+      response = await http.post(
+        uri,
+        body: {'order': order.toJson(), 'token': token},
+      );
+      if (response.statusCode != 200) {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
+
+  Future<List<Order>> getUsersOrders(Order order) async {
+    final uri = Uri.parse('$apiUrl/get_orders');
+    final http.Response response;
+    final token = await _getToken();
+    try {
+      response = await http.post(
+        uri,
+        body: {'token': token},
+      );
+      if (response.statusCode != 200) {
+        return [];
+      }
+    } catch (e) {
+      return [];
+    }
+    return List<Order>.from(
+      jsonDecode(response.body)['orders'].map((x) => Order.fromJson(x)),
+    );
+  }
 }
