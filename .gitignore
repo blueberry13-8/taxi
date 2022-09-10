@@ -31,7 +31,9 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
-
+*.lock
+*.g.dart
+*.freezed.dart
 # Web related
 lib/generated_plugin_registrant.dart
 
