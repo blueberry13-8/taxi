@@ -7,8 +7,8 @@ part 'order.g.dart';
 @freezed
 class Order with _$Order {
   const factory Order({
-    @JsonKey(name: 'full_name') required String initialPlace,
-    @JsonKey(name: 'destination_place') required String destinationPlace,
+    required String origin,
+    required String destination,
     @JsonKey(name: 'time_from') required int timeFrom,
     @JsonKey(name: 'time_to') required int timeTo,
   }) = _Order;
