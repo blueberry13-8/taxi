@@ -34,6 +34,10 @@ class UserRepo {
     // print('${response.statusCode}  ::::  ${response.body}');
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('token', jsonDecode(response.body)['user_token']);
+    await prefs.setString(
+      'role',
+      user.role.name,
+    );
     return true;
   }
 
@@ -53,6 +57,10 @@ class UserRepo {
     }
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('token', jsonDecode(response.body)['user_token']);
+    await prefs.setString(
+      'role',
+      user.role.name,
+    );
     return true;
   }
 
