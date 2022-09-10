@@ -4,8 +4,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taxi/models/user.dart';
 import 'package:taxi/models/order.dart';
 
-class CustomerRepo {
+class UserRepo {
   static const String apiUrl = 'https://volunteertaxiapp.herokuapp.com';
+
+  Future<bool> checkToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token') != null;
+  }
 
   Future<String> _getToken() async {
     final prefs = await SharedPreferences.getInstance();
@@ -68,5 +73,25 @@ class CustomerRepo {
       return false;
     }
     return true;
+  }
+
+  Future<List<Order>> getOrders() async {
+    final uri = Uri.parse('$apiUrl/get_orders');
+    final http.Response response;
+    final token = await _getToken();
+    try {
+      response = await http.post(
+        uri,
+        body: {'token': token},
+      );
+      if (response.statusCode != 200) {
+        return [];
+      }
+    } catch (e) {
+      return [];
+    }
+    return List<Order>.from(
+      jsonDecode(response.body)['orders'].map((x) => Order.fromJson(x)),
+    );
   }
 }
