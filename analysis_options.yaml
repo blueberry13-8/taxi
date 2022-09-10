@@ -5,7 +5,7 @@ linter:
     prefer_single_quotes: true
     require_trailing_commas: true
     always_put_required_named_parameters_first: true
-    prefer_expression_function_bodies: true
+    #prefer_expression_function_bodies: true
     prefer_final_fields: true
     always_use_package_imports: true
 
