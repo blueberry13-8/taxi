@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:taxi/models/user.dart';
 import 'package:taxi/models/order.dart';
+import 'package:taxi/models/user.dart';
 
 class UserRepo {
   static const String apiUrl = 'https://volunteertaxiapp.herokuapp.com';

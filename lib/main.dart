@@ -6,6 +6,9 @@ import 'package:logging/logging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:taxi/components/app.dart';
+import 'package:taxi/screens/authorization_screen.dart';
+
+import 'package:taxi/navigation/routes.dart';
 
 void _initLogger() {
   if (kDebugMode) {
@@ -19,8 +22,14 @@ void _initLogger() {
 void main() {
   _initLogger();
   runApp(
-    const ProviderScope(
-      child: App(),
+    ProviderScope(
+      child: MaterialApp(
+        routes: {
+          Routes.auth: (_) => const AuthorizationScreen(),
+
+        },
+        initialRoute: Routes.auth,
+      ),
     ),
   );
 }
