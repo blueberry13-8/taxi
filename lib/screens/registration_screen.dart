@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taxi/log/logger.dart';
@@ -6,7 +5,7 @@ import 'package:taxi/navigation/navigation_controller.dart';
 import 'package:taxi/repositories/api_user.dart';
 
 import 'package:taxi/models/user.dart';
-import '../navigation/routes.dart';
+import 'package:taxi/navigation/routes.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key? key}) : super(key: key);
@@ -22,11 +21,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _fullNameController = TextEditingController();
 
   UserRepo userRepo = UserRepo();
+  Role role = Role.customer;
 
   @override
   void initState() {
-    userInstance = SharedPreferences.getInstance();
     super.initState();
+    userInstance = SharedPreferences.getInstance();
   }
 
   @override

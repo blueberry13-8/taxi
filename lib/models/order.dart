@@ -18,4 +18,12 @@ class Order with _$Order {
   }) = _Order;
 
   factory Order.fromJson(Map<String, Object?> json) => _$OrderFromJson(json);
+
+
+}
+
+class TimeConverter {
+  static DateTime timestampToDateTime(int timestamp) => DateTime.fromMillisecondsSinceEpoch(timestamp);
+
+  static int dateTimeToTimestamp(DateTime dateTime) => dateTime.millisecondsSinceEpoch;
 }

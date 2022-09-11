@@ -20,6 +20,7 @@ class User with _$User {
     @JsonKey(name: 'phone_number') required String phoneNumber,
     required String password,
     @JsonKey(name: 'role') required Role role,
+    required List<String> orders,
   }) = _User;
 
   factory User.fromJson(Map<String, Object?> json) => _$UserFromJson(json);
