@@ -37,7 +37,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           children: [
             const Text(
               'Регистрация',
-              style: TextStyle(height: 20),
+              style: TextStyle(fontSize: 25, height: 3),
             ),
             Container(
               margin: const EdgeInsets.all(20),
@@ -67,7 +67,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ),
             ),
             PopupMenuButton(
-              initialValue: 1,
               itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                 PopupMenuItem(
                   value: 0,
@@ -121,7 +120,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     fullName: _fullNameController.text,
                     phoneNumber: _controllerPhone.text,
                     password: _passwordController.text,
-                    role: Role.volunteer, orders: [],
+                    role: role, orders: [],
                   ),
                 );
                 logger.info('Registration - $isOk');
@@ -135,8 +134,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   NavigationController()
                       .pushWithReplaceNamed(Routes.mainVolunteer);
                 } else{
-                  NavigationController()
-                      .pushWithReplaceNamed(Routes.mainModerator);
+                  // NavigationController()
+                  //     .pushWithReplaceNamed(Routes.mainModerator);
                 }
               },
             ),

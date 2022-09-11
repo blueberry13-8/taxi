@@ -18,9 +18,9 @@ class User with _$User {
   const factory User({
     @JsonKey(name: 'full_name') required String fullName,
     @JsonKey(name: 'phone_number') required String phoneNumber,
-    required String password,
+    @JsonKey(required: false) String? password,
     @JsonKey(name: 'role') required Role role,
-    required List<String> orders,
+    required List<int> orders,
   }) = _User;
 
   factory User.fromJson(Map<String, Object?> json) => _$UserFromJson(json);

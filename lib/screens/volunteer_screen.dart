@@ -23,29 +23,74 @@ class _VolunteerScreenState extends State<VolunteerScreen> {
   void initState() {
     super.initState();
     orders = userRepo.getOrders();
-    //inProgress = userRepo.getUserOrders();
+    inProgress = userRepo.getUserOrders();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () {
-              orders = userRepo.getOrders();
-              //        inProgress = userRepo.getUserOrders();
-              setState(() {
-
-              });
-            },
-            icon: const Icon(Icons.refresh),
-          ),
-        ],
-      ),
+      appBar: [
+        AppBar(
+          title: Text('Забронированные поездки'),
+          actions: [
+            IconButton(
+              onPressed: () {
+                orders = userRepo.getOrders();
+                inProgress = userRepo.getUserOrders();
+                setState(() {});
+              },
+              icon: const Icon(Icons.refresh),
+            ),
+          ],
+        ),
+        AppBar(
+          title: Text('Все поездки'),
+          actions: [
+            IconButton(
+              onPressed: () {
+                orders = userRepo.getOrders();
+                inProgress = userRepo.getUserOrders();
+                setState(() {});
+              },
+              icon: const Icon(Icons.refresh),
+            ),
+          ],
+        ),
+      ].elementAt(_selectedIndex),
       body: [
-        const Center(
-          child: Text('Current tasks'),
+        Center(
+          child: FutureBuilder<List<Order>>(
+            future: inProgress,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData || snapshot.hasError) {
+                return const CircularProgressIndicator();
+              }
+              DateTime cur = DateTime.fromMicrosecondsSinceEpoch(0);
+              return ListView.builder(
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  Order order = snapshot.data!.elementAt(index);
+                  List<Widget> list = [];
+                  if (order.timeStart.day < cur.day) {
+                    cur = order.timeStart;
+                    list.add(
+                      Text(
+                        DateFormat('dd, MMMM, EEEE', 'ru').format(cur),
+                        style: const TextStyle(
+                          height: 30,
+                          color: CupertinoColors.inactiveGray,
+                        ),
+                      ),
+                    );
+                  }
+                  list.add(OrderTile(order: order));
+                  return Column(
+                    children: list,
+                  );
+                },
+              );
+            },
+          ),
         ),
         Center(
           child: FutureBuilder<List<Order>>(

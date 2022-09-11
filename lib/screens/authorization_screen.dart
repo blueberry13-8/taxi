@@ -37,7 +37,7 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
         } else if (role == Role.volunteer.name) {
           NavigationController().pushWithReplaceNamed(Routes.mainVolunteer);
         } else {
-          NavigationController().pushWithReplaceNamed(Routes.mainModerator);
+          //NavigationController().pushWithReplaceNamed(Routes.mainModerator);
         }
       }
     });
@@ -93,7 +93,6 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
             TextButton(
               child: const Text('Нет аккаунта?\nЗарегистрироваться'),
               onPressed: () {
-                //NavigationController().pushNamed(Routes.reg);
                 NavigationController().pushWithReplaceNamed(Routes.reg);
               },
             ),

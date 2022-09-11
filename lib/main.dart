@@ -5,13 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:taxi/navigation/navigation_controller.dart';
+import 'package:taxi/screens/add_order_screen.dart';
 import 'package:taxi/screens/authorization_screen.dart';
 import 'package:taxi/navigation/routes.dart';
 import 'package:taxi/screens/customer_screen.dart';
 import 'package:taxi/screens/moderator_screen.dart';
+import 'package:taxi/screens/order_screen.dart';
 import 'package:taxi/screens/registration_screen.dart';
 import 'package:taxi/screens/volunteer_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'models/order.dart';
 
 void _initLogger() {
   if (kDebugMode) {
@@ -44,10 +48,14 @@ void main() {
           Routes.mainVolunteer: (_) => const VolunteerScreen(),
           Routes.mainCustomer: (_) => const CustomerScreen(),
           Routes.mainModerator: (_) => const ModeratorScreen(),
+          Routes.addOrderScreen: (_) => const AddOrderScreen(),
         },
-        // onGenerateRoute: (context, settings){
-        //   return MaterialPageRoute(builder: (context)=>)
-        // },
+        onGenerateRoute: (settings){
+          if (settings.name == Routes.infoOrder) {
+            return MaterialPageRoute(builder: (context) => OrderScreen(order: (settings.arguments as List)[0] as Order));
+          }
+          return null;
+        },
         initialRoute: Routes.auth,
       ),
     ),
