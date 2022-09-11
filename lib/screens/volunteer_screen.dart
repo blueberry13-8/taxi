@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:taxi/components/order_tile.dart';
 import 'package:taxi/repositories/api_user.dart';
 
-import '../models/order.dart';
+import 'package:taxi/models/order.dart';
 
 class VolunteerScreen extends StatefulWidget {
   const VolunteerScreen({Key? key}) : super(key: key);

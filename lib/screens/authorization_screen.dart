@@ -6,7 +6,7 @@ import 'package:taxi/navigation/navigation_controller.dart';
 import 'package:taxi/repositories/api_user.dart';
 
 import 'package:taxi/models/user.dart';
-import '../navigation/routes.dart';
+import 'package:taxi/navigation/routes.dart';
 
 class AuthorizationScreen extends StatefulWidget {
   const AuthorizationScreen({Key? key}) : super(key: key);

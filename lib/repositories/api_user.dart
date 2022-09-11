@@ -22,9 +22,11 @@ class UserRepo {
     final uri = Uri.parse('$apiUrl/register');
     final http.Response response;
     try {
+      logger.info(jsonEncode(user.toJson()));
       response = await http.post(
         uri,
-        body: user.toJson(),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(user.toJson()),
       );
       if (response.statusCode != 200) {
         return false;
