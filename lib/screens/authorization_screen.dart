@@ -71,7 +71,10 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
                     ),
                     Container(
                       margin: const EdgeInsets.only(
-                          right: 20, left: 20, bottom: 20),
+                        right: 20,
+                        left: 20,
+                        bottom: 20,
+                      ),
                       child: TextField(
                         controller: _passwordController,
                         decoration: const InputDecoration(
@@ -88,6 +91,7 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
                             phoneNumber: _controller.text,
                             password: _passwordController.text,
                             role: Role.volunteer,
+                            orders: [],
                           ),
                         );
                         logger.info('LogIn - $isOk');
@@ -95,11 +99,10 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
                     ),
                     TextButton(
                       child: const Text('Нет аккаунта?\nЗарегистрироваться'),
-                      onPressed: () async {
-
+                      onPressed: () {
+                        NavigationController().pushWithReplaceNamed(Routes.reg);
                       },
                     ),
-
                   ],
                 ),
               );

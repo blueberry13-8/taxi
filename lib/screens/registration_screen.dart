@@ -8,19 +8,18 @@ import 'package:taxi/repositories/api_user.dart';
 import 'package:taxi/models/user.dart';
 import '../navigation/routes.dart';
 
-class AuthorizationScreen extends StatefulWidget {
-  const AuthorizationScreen({Key? key}) : super(key: key);
+class RegistrationScreen extends StatefulWidget {
+  const RegistrationScreen({Key? key}) : super(key: key);
 
   @override
-  State<AuthorizationScreen> createState() => _AuthorizationScreenState();
+  State<RegistrationScreen> createState() => _RegistrationScreenState();
 }
 
-class _AuthorizationScreenState extends State<AuthorizationScreen> {
+class _RegistrationScreenState extends State<RegistrationScreen> {
   late Future<SharedPreferences> userInstance;
   final _controllerPhone = TextEditingController();
   final _passwordController = TextEditingController();
   final _fullNameController = TextEditingController();
-  final
 
   UserRepo userRepo = UserRepo();
 
@@ -52,24 +51,90 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
             Container(
               margin: const EdgeInsets.only(right: 20, left: 20, bottom: 20),
               child: TextField(
+                controller: _fullNameController,
+                decoration: const InputDecoration(
+                  hintText: 'ФИО',
+                ),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(right: 20, left: 20, bottom: 20),
+              child: TextField(
                 controller: _passwordController,
                 decoration: const InputDecoration(
                   hintText: 'Пароль',
                 ),
               ),
             ),
+            PopupMenuButton(
+              initialValue: 1,
+              itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                PopupMenuItem(
+                  value: 0,
+                  child: const Text(
+                    'Водитель-волонтёр',
+                  ),
+                  onTap: () {
+                    role = Role.volunteer;
+                    setState(() {});
+                  },
+                ),
+                PopupMenuItem(
+                  value: 1,
+                  child: const Text(
+                    'Пассажир',
+                  ),
+                  onTap: () {
+                    role = Role.customer;
+                    setState(() {});
+                  },
+                ),
+                PopupMenuItem(
+                  value: 2,
+                  onTap: () {
+                    role = Role.moderator;
+                    setState(() {});
+                  },
+                  child: const Text(
+                    'Модератор',
+                  ),
+                ),
+              ],
+              child: ListTile(
+                title: const Text(
+                  'Ваша роль',
+                ),
+                subtitle: Text(
+                  role == Role.volunteer
+                      ? 'Водитель-волонтёр'
+                      : role == Role.customer
+                          ? 'Пассажир'
+                          : 'Модератор',
+                ),
+              ),
+            ),
             TextButton(
-              child: const Text('Войти'),
+              child: const Text('Зарегистрироваться'),
               onPressed: () async {
                 var isOk = await userRepo.register(
                   User(
-                    fullName: 'fullName',
+                    fullName: _fullNameController.text,
                     phoneNumber: _controllerPhone.text,
                     password: _passwordController.text,
-                    role: Role.volunteer,
+                    role: Role.volunteer, orders: [],
                   ),
                 );
                 logger.info('Registration - $isOk');
+                if (role == Role.customer) {
+                  NavigationController()
+                      .pushWithReplaceNamed(Routes.mainCustomer);
+                } else if (role == Role.volunteer){
+                  NavigationController()
+                      .pushWithReplaceNamed(Routes.mainVolunteer);
+                } else{
+                  NavigationController()
+                      .pushWithReplaceNamed(Routes.mainModerator);
+                }
               },
             ),
           ],

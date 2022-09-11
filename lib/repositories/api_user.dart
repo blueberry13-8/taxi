@@ -102,4 +102,24 @@ class UserRepo {
       jsonDecode(response.body)['orders'].map((x) => Order.fromJson(x)),
     );
   }
+
+  Future<List<Order>> getUserOrders() async {
+    final uri = Uri.parse('$apiUrl/get_user_orders');
+    final http.Response response;
+    final token = await _getToken();
+    try {
+      response = await http.post(
+        uri,
+        body: {'token': token},
+      );
+      if (response.statusCode != 200) {
+        return [];
+      }
+    } catch (e) {
+      return [];
+    }
+    return List<Order>.from(
+      jsonDecode(response.body)['orders'].map((x) => Order.fromJson(x)),
+    );
+  }
 }
