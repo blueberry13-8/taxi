@@ -7,14 +7,14 @@ part 'order.g.dart';
 @freezed
 class Order with _$Order {
   const factory Order({
-    required String id,
+    required int id,
     required String origin,
     required String destination,
-    @JsonKey(required: false,) String? description,
-    @JsonKey(name: 'time_start', fromJson: TimeConverter.timestampToDateTime, toJson: TimeConverter.dateTimeToTimestamp,) required DateTime timeStart,
-    @JsonKey(name: 'time_to', fromJson: TimeConverter.timestampToDateTime, toJson: TimeConverter.dateTimeToTimestamp,) required DateTime timeTo,
-    @JsonKey(name: 'volunteer_id', required: false,) String? volunteerId,
-    @JsonKey(name: 'customer_id',) required String customerId,
+    @JsonKey(name: 'comment', required: false,) String? description,
+    @JsonKey(name: 'start_time', fromJson: TimeConverter.timestampToDateTime, toJson: TimeConverter.dateTimeToTimestamp,) required DateTime timeStart,
+    @JsonKey(name: 'time_end', fromJson: TimeConverter.timestampToDateTime, toJson: TimeConverter.dateTimeToTimestamp,) required DateTime timeTo,
+    @JsonKey(name: 'volunteer_token', required: false,) String? volunteerId,
+    @JsonKey(name: 'customer_token',) required String customerId,
   }) = _Order;
 
   factory Order.fromJson(Map<String, Object?> json) => _$OrderFromJson(json);

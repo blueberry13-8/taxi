@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taxi/log/logger.dart';
 import 'package:taxi/models/order.dart';
 import 'package:taxi/models/user.dart';
 
@@ -28,12 +29,16 @@ class UserRepo {
       if (response.statusCode != 200) {
         return false;
       }
-    } catch (e) {
+    } catch (e, stack) {
+      logger.severe(e, stack);
       return false;
     }
-    // print('${response.statusCode}  ::::  ${response.body}');
+    logger.info('Registration completed: ${response.body}');
+
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('token', jsonDecode(response.body)['user_token']);
+    logger.info(
+        'Token from SERVER ${jsonDecode(response.body)['user_token']}\nToken from PREFS ${prefs.getString('token')}');
     await prefs.setString(
       'role',
       user.role.name,
@@ -47,7 +52,8 @@ class UserRepo {
     try {
       response = await http.post(
         uri,
-        body: user.toJson(),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(user.toJson()),
       );
       if (response.statusCode != 200) {
         return false;
@@ -72,7 +78,8 @@ class UserRepo {
     try {
       response = await http.post(
         uri,
-        body: {'order': order.toJson(), 'token': token},
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'order': jsonEncode(order.toJson()), 'token': token}),
       );
       if (response.statusCode != 200) {
         return false;
@@ -90,7 +97,8 @@ class UserRepo {
     try {
       response = await http.post(
         uri,
-        body: {'token': token},
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'token': token}),
       );
       if (response.statusCode != 200) {
         return [];
@@ -98,28 +106,34 @@ class UserRepo {
     } catch (e) {
       return [];
     }
+    logger.info(response.body);
     return List<Order>.from(
-      jsonDecode(response.body)['orders'].map((x) => Order.fromJson(x)),
-    );
+        jsonDecode(response.body)['orders'].map((x) => Order.fromJson(x)));
   }
 
-  Future<List<Order>> getUserOrders() async {
-    final uri = Uri.parse('$apiUrl/get_user_orders');
+  Future<User> getUserByToken() async {
+    final uri = Uri.parse('$apiUrl/get_user');
     final http.Response response;
     final token = await _getToken();
     try {
       response = await http.post(
         uri,
-        body: {'token': token},
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'token': token}),
       );
       if (response.statusCode != 200) {
-        return [];
+        throw Exception(
+            'Cannot get user from server. Status code: ${response.statusCode}');
       }
     } catch (e) {
-      return [];
+      throw Exception('Cannot get user from server. Post request did not work');
     }
-    return List<Order>.from(
-      jsonDecode(response.body)['orders'].map((x) => Order.fromJson(x)),
-    );
+    return User.fromJson(jsonDecode(response.body));
   }
+
+// Future<List<Order>> getUserOrders() async {
+//   User user = await getUserByToken();
+//   //return user.orders;
+// }
+
 }

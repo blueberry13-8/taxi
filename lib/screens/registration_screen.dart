@@ -125,6 +125,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                 );
                 logger.info('Registration - $isOk');
+                if (!isOk){
+                  return;
+                }
                 if (role == Role.customer) {
                   NavigationController()
                       .pushWithReplaceNamed(Routes.mainCustomer);
